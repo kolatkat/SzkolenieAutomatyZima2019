@@ -4,6 +4,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Interactions;
 using System;
+using System.Linq;
 using Xunit;
 
 namespace Project1
@@ -37,25 +38,48 @@ namespace Project1
         public void Can_add_new_comment()
         {
             browser.Navigate().GoToUrl("http://automatyzacja.benedykt.net/");
-            var firstParagraph = browser.FindElement(By.LinkText("ghfjhjhvjhvjh"));
-            firstParagraph.Click();
+            var latesNote = browser.FindElement(By.CssSelector(".entry-title > a"));
+            latesNote.Click();
+
+            //r firstNote = browser.FindElement(By.CssSelector(".entry-title"));
 
            var comment =  browser.FindElement(By.Id("comment"));
-            //comment.Click();
-            comment.SendKeys("Mój komentarz (kasia kurs grudzień)");
-            var autor = browser.FindElement(By.Id("author"));
-            //autor.Click();
-            autor.SendKeys("Kate");
-            var mail = browser.FindElement(By.Id("email"));
-            //mail.Click();
-            mail.SendKeys("testTest@test.pl");
+           var examplText = Faker.Lorem.Paragraph();
+            comment.SendKeys(examplText);
+
+            var author = browser.FindElement(By.Id("author"));
+            var exampleAUthor = Faker.Name.FullName();
+            author.SendKeys(exampleAUthor);
+
+            var email = browser.FindElement(By.Id("email"));
+            var exampleEmail = Faker.Internet.Email();
+            email.SendKeys(exampleEmail);
 
             MoveToElement(browser.FindElement(By.ClassName("meta-nav")));
 
-            var sendComments = browser.FindElement(By.Id("submit"));
-            sendComments.Click();
+            browser.FindElement(By.Id("submit")).Submit();
 
-            //var result = 
+            var comments = browser.FindElements(By.CssSelector("article.comment-body"));
+            var myComments = comments
+                    .Where(c => c.FindElement(By.CssSelector(".fn")).Text == exampleAUthor)
+                    .Where( c => c.FindElement(By.CssSelector(".comment-content > p" )).Text == examplText);
+
+            Assert.Single(myComments);
+            
+
+            /*comment.SendKeys("Mój komentarz (kasia kurs grudzień)");
+
+        var autor = browser.FindElement(By.Id("author"));
+            autor.SendKeys("Kate");
+
+         var mail = browser.FindElement(By.Id("email"));
+             mail.SendKeys("testTest@test.pl");
+
+         MoveToElement(browser.FindElement(By.ClassName("meta-nav")));
+
+         var sendComments = browser.FindElement(By.Id("submit"));
+         sendComments.Click(); */
+
         }
 
         public void Dispose()
