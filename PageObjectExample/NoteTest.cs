@@ -14,10 +14,17 @@ namespace PageObjectsExample
         public void Can_publish_new_note()
         {
             //zalogowa się do panelu administracyjnego
-            //utworzyć notatkę//wylogowa
+            //utworzyć notatkę
+            //wylogowa
             //nowa notatka jest opublikowana
 
             var blogStartPage = MainPageAdmin.Open(GetBrowser());
+            var loginUser = blogStartPage.NavigateToAdminPanel();
+            var exampleComment = new ExampleComment();
+            var link = loginUser.AddComment(exampleComment);
+            var notePage = loginUser.LogOut();
+            //notePage.GoTo(link);
+
         }
     }
 }
