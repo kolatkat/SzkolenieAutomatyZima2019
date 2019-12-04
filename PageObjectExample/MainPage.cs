@@ -8,18 +8,15 @@ namespace PageObjectsExample
         private const string MAIN_PAGE_BASE_URL = "http://automatyzacja.benedykt.net/";
         private readonly IWebDriver browser;
 
-        public MainPage()
-        {
-        }
 
         private MainPage(IWebDriver browser)
         {
             this.browser = browser;
             browser.Navigate().GoToUrl(MAIN_PAGE_BASE_URL);
         }
-        internal static MainPage Open()
+        internal static MainPage Open(IWebDriver browser)
         {
-            return new MainPage(DriverFactory.Get());
+            return new MainPage(browser);
         }
 
         internal NotePage NavigateToNewestNote()
