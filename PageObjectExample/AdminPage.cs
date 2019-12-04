@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Linq;
@@ -39,6 +40,13 @@ namespace PageObjectsExample
 
         internal NotePage LogOut()
         {
+            var displayName = browser.FindElement(By.Id("wp-admin-bar-my-account"));
+            MoveToElement(displayName);
+            
+            WaitForClickable(By.PartialLinkText("Wyloguj się"), 5);
+            var getOut = browser.FindElement(By.PartialLinkText("Wyloguj się"));
+            getOut.Click();
+
             return new NotePage(browser);
 
         }
@@ -59,6 +67,17 @@ namespace PageObjectsExample
         {
             var wait = new WebDriverWait(browser, TimeSpan.FromSeconds(seconds));
             wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(by));
+        }
+        internal void MoveToElement(By selector)
+        {
+            var element = browser.FindElement(selector);
+            MoveToElement(element);
+        }
+        internal void MoveToElement(IWebElement element)
+        {
+            Actions builder = new Actions(browser);
+            Actions moveTo = builder.MoveToElement(element);
+            moveTo.Build().Perform();
         }
     }
 }
