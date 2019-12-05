@@ -21,9 +21,13 @@ namespace PageObjectsExample
             var blogStartPage = MainPageAdmin.Open(GetBrowser());
             var loginUser = blogStartPage.NavigateToAdminPanel();
             var exampleComment = new ExampleComment();
-            var link = loginUser.AddComment(exampleComment);
-            var notePage = loginUser.LogOut();
-            //notePage.GoTo(link);
+            var link = loginUser.AddCommentNotes(exampleComment);
+            loginUser.LogOut();
+
+            var notePage = new NotePage(GetBrowser(), link);
+
+
+           Assert.True(notePage.HasMyNotes(exampleComment));
 
         }
     }

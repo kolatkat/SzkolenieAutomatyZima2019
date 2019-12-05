@@ -14,7 +14,7 @@ namespace PageObjectsExample
         {
             this.browser = browser;
         }
-        internal string AddComment(ExampleComment exampleComment)
+        internal string AddCommentNotes(ExampleComment exampleComment)
         {
             var note = browser.FindElement(By.LinkText("Wpisy"));
                 note.Click();
@@ -38,7 +38,7 @@ namespace PageObjectsExample
             
         } 
 
-        internal NotePage LogOut()
+        internal void LogOut()
         {
             var displayName = browser.FindElement(By.Id("wp-admin-bar-my-account"));
             MoveToElement(displayName);
@@ -47,7 +47,7 @@ namespace PageObjectsExample
             var getOut = browser.FindElement(By.PartialLinkText("Wyloguj się"));
             getOut.Click();
 
-            return new NotePage(browser);
+            
 
         }
         
